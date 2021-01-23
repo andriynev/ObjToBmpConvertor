@@ -1,11 +1,13 @@
 package consoleTriangle;
 
+import bmpCreator.BmpCreator;
+
 public class Program
 {
     public static void main(String[] args)
     {
         // Point from where rays would be cast
-        Vector3 cameraPos = new Vector3(0, 0, -5);
+        Vector3 cameraPos = new Vector3(-0.5f, 0.5f, -5);
 
         // Look direction
         Vector3 cameraDir = new Vector3(0, 0, 1);
@@ -17,7 +19,7 @@ public class Program
         float fov = 60;
 
         // Screen size in pixels
-        int screenWidth = 20, screenHeight = 20;
+        int screenWidth = 50, screenHeight = 50;
         boolean[][] screenBuffer = new boolean[screenWidth][screenHeight];
 
         /*  b(-2,1,0) *--------* c(1,1,0)
@@ -26,12 +28,13 @@ public class Program
          *                  *
          *             a(0,0,0)
          */
-        Triangle[] trianglesToDraw = new Triangle[3];
+        int size = 1;
+        Triangle[] trianglesToDraw = new Triangle[size];
         trianglesToDraw[0] = new Triangle(new Vector3(0, 0, 0), new Vector3(-2, 1, 0), new Vector3(1, 1, 0));
-        trianglesToDraw[1] = new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 1, 0));
-        trianglesToDraw[2] = new Triangle(new Vector3(0, 0, 0), new Vector3(-2, 1, 0), new Vector3(-1, -1, 3));
+        //trianglesToDraw[1] = new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 1, 0));
+        //trianglesToDraw[2] = new Triangle(new Vector3(0, 0, 0), new Vector3(-2, 1, 0), new Vector3(-1, -1, 3));
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < size; i++)
         {
            Triangle triangleToDraw = trianglesToDraw[i];
         for (int x = 0; x < screenWidth; x++)
@@ -71,6 +74,7 @@ public class Program
 
         // Output our buffer
         DrawScreenBuffer(screenHeight, screenWidth, screenBuffer);
+        BmpCreator.saveBmp(screenWidth, screenHeight, screenBuffer);
     }
 
     private static void DrawScreenBuffer(int screenHeight, int screenWidth, boolean[][] screenBuffer)
