@@ -1,4 +1,4 @@
-package consoleTriangle;
+package geometry;
 
 
 public final class Triangle {
