@@ -21,6 +21,7 @@ public class IntersectionChecker
         {
             return false;
         }
+
         double f = 1 / a;
         Vector3 s = Vector3.opSubtract(rayOrigin, vertex0);
         double u = f * s.DotProduct(h);
@@ -28,6 +29,7 @@ public class IntersectionChecker
         {
             return false;
         }
+
         Vector3 q = s.CrossProduct(edge1);
         double v = f * rayVector.DotProduct(q);
         if (v < 0.0 || u + v > 1.0)

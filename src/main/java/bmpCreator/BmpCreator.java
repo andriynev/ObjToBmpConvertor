@@ -9,22 +9,23 @@ import javax.imageio.ImageIO;
 
 public class BmpCreator {
 
-    public static void saveBmp(int imageWidth, int imageHeight, boolean[][] buffer) {
+    public static void saveBmp(int imageWidth, int imageHeight, double[][] buffer) {
         BufferedImage img = map(imageWidth, imageHeight, buffer);
         savePNG(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/test.bmp");
     }
 
-    private static BufferedImage map(int sizeX, int sizeY, boolean[][] buffer) {
+    private static BufferedImage map(int sizeX, int sizeY, double[][] buffer) {
         final BufferedImage res = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-
-                if (buffer[x][y] == true) {
-                    res.setRGB(x, y, Color.WHITE.getRGB());
-                } else {
+                System.out.print(buffer[x][y]);
+                if (buffer[x][y] == 10) {
                     res.setRGB(x, y, Color.RED.getRGB());
+                } else {
+                    res.setRGB(x, y, getColor((int) ((1- Math.abs(buffer[x][y])) * 100)));
                 }
             }
+            System.out.println();
         }
         return res;
     }
@@ -36,6 +37,13 @@ public class BmpCreator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static int getColor(int percent){
+        percent = 100 - percent;
+        int rgb = 255 * percent / 100;
+        Color color = new Color(rgb, rgb, rgb);
+        return  color.getRGB();
     }
 
 }

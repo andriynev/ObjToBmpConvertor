@@ -44,8 +44,8 @@ public class Converter {
         double fov = 60;
 
         // Screen size in pixels
-        int screenWidth = 100, screenHeight = 100;
-        boolean[][] screenBuffer = new boolean[screenWidth][screenHeight];
+        int screenWidth = 200, screenHeight = 200;
+        double[][] screenBuffer = new double[screenWidth][screenHeight];
 
         /*  b(-2,1,0) *--------* c(1,1,0)
          *              \     /
@@ -59,43 +59,51 @@ public class Converter {
         //trianglesToDraw[1] = new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 1, 0));
         //trianglesToDraw[2] = new Triangle(new Vector3(0, 0, 0), new Vector3(-2, 1, 0), new Vector3(-1, -1, 3));
 
-        for (int i = 0; i < triangleList.size(); i++)
-        {
-            Triangle triangleToDraw = triangleList.get(i);
-            //System.out.println(triangleToDraw.getC().getZ());
+
+
             for (int x = 0; x < screenWidth; x++)
             {
                 for (int y = 0; y < screenHeight; y++)
                 {
-                    // Normalized coordinates of pixel to [-1;1] interval;
-                    // y is inverted because in console output it goes from 0 to screenHeight
-                    // and in world coordinates y goes from realPlaneHeight/2 to -realPlaneHeight/2
-                    double xNorm = (x - screenWidth / 2) / (double)screenWidth;
-                    double yNorm = -(y - screenHeight / 2) / (double)screenHeight;
+                    screenBuffer[x][y] = 10;
+                    for (int i = 0; i < triangleList.size(); i++) {
 
-                    double distanceToPlaneFromCamera = Vector3.opSubtract(cameraPos, planeOrigin).getLength();
-                    double fovInRad = fov / 180f * Math.PI;
+                        Triangle triangleToDraw = triangleList.get(i);
 
-                    // Height of plane in front of camera in our world units. Tangent function needs radians
-                    double realPlaneHeight = (double)(distanceToPlaneFromCamera * Math.tan(fovInRad));
+                        // Normalized coordinates of pixel to [-1;1] interval;
+                        // y is inverted because in console output it goes from 0 to screenHeight
+                        // and in world coordinates y goes from realPlaneHeight/2 to -realPlaneHeight/2
+                        double xNorm = (x - screenWidth / 2) / (double)screenWidth;
+                        double yNorm = -(y - screenHeight / 2) / (double)screenHeight;
 
-                    // Here we suppose that camera is looking always from point (0,0,-Z), so the math here is little simpler to understand
-                    // We need to find point on plane that is xNorm * realPlaneHeight / 2 units away from center in x direction,
-                    // and similarly in y-dir. If the camera is moved and/or plane is rotated, math is little harder here
-                    // Also, we assume height == width
-                    Vector3 positionOnPlane = Vector3.opAdd(planeOrigin, new Vector3(xNorm * realPlaneHeight / 2, yNorm * realPlaneHeight / 2, 0));
+                        double distanceToPlaneFromCamera = Vector3.opSubtract(cameraPos, planeOrigin).getLength();
+                        double fovInRad = fov / 180f * Math.PI;
 
-                    // Throw a ray from camera to the point we found and beyond
-                    Vector3 rayDirection = Vector3.opSubtract(positionOnPlane, cameraPos);
+                        // Height of plane in front of camera in our world units. Tangent function needs radians
+                        double realPlaneHeight = (double)(distanceToPlaneFromCamera * Math.tan(fovInRad));
 
-                    // If we find an intersection of the ray with our triangle, we draw "pixel"
-                    if (IntersectionChecker.ThereIsIntersectionBetweenRayAndTriangle(cameraPos, rayDirection, triangleToDraw))
-                    {
-                        screenBuffer[x][y] = true;
+                        // Here we suppose that camera is looking always from point (0,0,-Z), so the math here is little simpler to understand
+                        // We need to find point on plane that is xNorm * realPlaneHeight / 2 units away from center in x direction,
+                        // and similarly in y-dir. If the camera is moved and/or plane is rotated, math is little harder here
+                        // Also, we assume height == width
+                        Vector3 positionOnPlane = Vector3.opAdd(planeOrigin, new Vector3(xNorm * realPlaneHeight / 2, yNorm * realPlaneHeight / 2, 0));
+
+                        // Throw a ray from camera to the point we found and beyond
+                        Vector3 rayDirection = Vector3.opSubtract(positionOnPlane, cameraPos);
+
+                        // If we find an intersection of the ray with our triangle, we draw "pixel"
+                        if (IntersectionChecker.ThereIsIntersectionBetweenRayAndTriangle(cameraPos, rayDirection, triangleToDraw))
+                        {
+
+                            if(FlatShading.calculate(triangleToDraw, cameraDir) <= 0 && FlatShading.calculate(triangleToDraw, cameraDir) >= -1 )
+                            screenBuffer[x][y] = FlatShading.calculate(triangleToDraw, cameraDir);
+
+                        }
                     }
+
                 }
             }
-        }
+
 
 
         // Output our buffer
