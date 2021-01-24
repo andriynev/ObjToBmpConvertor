@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class ObjParser {
 
     private final static String OBJ_VERTEX_NORMAL = "vn";
+    private final static String OBJ_VERTEX_TEXTURE = "vt";
     private final static String OBJ_VERTEX = "v";
     private final static String OBJ_FACE = "f";
 
@@ -18,6 +19,7 @@ public class ObjParser {
     private ArrayList<Triangle> triangleList = new ArrayList<Triangle>();
 
     private final static String PATH = "test.obj";
+    //private final static String PATH = "delphin.obj";
 
     public ObjParser() {
     }
@@ -57,13 +59,14 @@ public class ObjParser {
             if (line.startsWith("#")) // comment
             {
                 continue;
-            } else if (line.startsWith(OBJ_VERTEX)) {
-                vertexList.add(processVertex(line));
+            } else if (line.startsWith(OBJ_VERTEX_TEXTURE)) {
+                continue;
             } else if (line.startsWith(OBJ_VERTEX_NORMAL)) {
                 continue;
-                //processNormal(line);
             } else if (line.startsWith(OBJ_FACE)) {
                 triangleList.add(processFace(line));
+            } else if (line.startsWith(OBJ_VERTEX)) {
+                vertexList.add(processVertex(line));
             } else {
                 continue;
             }
@@ -98,24 +101,25 @@ public class ObjParser {
         int value = 0;
 
         splitStr = str.split("/");
-        int length = splitStr.length;
-        switch (length) {
-            case 3 :
-                //splitStr = str.split("/");
-                value = Integer.parseInt(splitStr[0]);
-                break;
-//            case 4 :
-//                //splitStr = str.split("//");
-//                value = Integer.parseInt(splitStr[0]);
-//                break;
-//            case 2 :
+        value = Integer.parseInt(splitStr[0]);
+//        int length = splitStr.length;
+//        switch (length) {
+//            case 3 :
 //                //splitStr = str.split("/");
-//                value = Integer.parseInt(splitStr[0]);
+//
 //                break;
-//            case 1 :
-//                value = Integer.parseInt(str);
-            default: break;
-        }
+////            case 4 :
+////                //splitStr = str.split("//");
+////                value = Integer.parseInt(splitStr[0]);
+////                break;
+////            case 2 :
+////                //splitStr = str.split("/");
+////                value = Integer.parseInt(splitStr[0]);
+////                break;
+////            case 1 :
+////                value = Integer.parseInt(str);
+//            default: break;
+//        }
 
        return value;
 

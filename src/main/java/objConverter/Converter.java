@@ -28,11 +28,20 @@ public class Converter {
         minZ = parser.getMinZ();
 
 
-        double centerX = (Math.abs(maxX) + Math.abs(minX)) / 2;
-        double centerY = (Math.abs(maxY) + Math.abs(minY)) / 2;
+        double centerX = (maxX - minX) / 2;
+        double centerY = (maxY - minY) / 2;
+        double coef;
+
 
         // Point from where rays would be cast
-        Vector3 cameraPos = new Vector3(minX + centerX, minY + centerY, minZ - 5);
+        if (centerX > centerY) {
+            coef = centerX *3;
+        } else {
+            coef = centerY *3;
+        }
+        System.out.println("coef " + coef);
+
+        Vector3 cameraPos = new Vector3(minX + centerX, minY + centerY, minZ - coef);
 
         // Look direction
         Vector3 cameraDir = new Vector3(0, 0, 1);
@@ -44,7 +53,7 @@ public class Converter {
         double fov = 60;
 
         // Screen size in pixels
-        int screenWidth = 200, screenHeight = 200;
+        int screenWidth = 300, screenHeight = 300;
         double[][] screenBuffer = new double[screenWidth][screenHeight];
 
         /*  b(-2,1,0) *--------* c(1,1,0)
@@ -96,7 +105,7 @@ public class Converter {
                         {
 
                             if(FlatShading.calculate(triangleToDraw, cameraDir) <= 0 && FlatShading.calculate(triangleToDraw, cameraDir) >= -1 )
-                            screenBuffer[x][y] = FlatShading.calculate(triangleToDraw, cameraDir);
+                            screenBuffer[x][y] = FlatShading.calculate(triangleToDraw, new Vector3(-1, -1, 1));
 
                         }
                     }

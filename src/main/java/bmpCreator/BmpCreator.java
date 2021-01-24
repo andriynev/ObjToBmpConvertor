@@ -18,14 +18,14 @@ public class BmpCreator {
         final BufferedImage res = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                System.out.print(buffer[x][y]);
+                //System.out.print(buffer[x][y]);
                 if (buffer[x][y] == 10) {
-                    res.setRGB(x, y, Color.RED.getRGB());
+                    res.setRGB(x, y, Color.CYAN.getRGB());
                 } else {
                     res.setRGB(x, y, getColor((int) ((1- Math.abs(buffer[x][y])) * 100)));
                 }
             }
-            System.out.println();
+            //System.out.println();
         }
         return res;
     }
