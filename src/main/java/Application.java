@@ -18,7 +18,7 @@ public class Application {
             Vector3 planeOrigin = Vector3.opAdd(cameraPos, cameraDir.Norm());
 
             // Field of view in degrees
-            float fov = 60;
+            double fov = 60;
 
             // Screen size in pixels
             int screenWidth = 50, screenHeight = 50;
@@ -46,14 +46,14 @@ public class Application {
                         // Normalized coordinates of pixel to [-1;1] interval;
                         // y is inverted because in console output it goes from 0 to screenHeight
                         // and in world coordinates y goes from realPlaneHeight/2 to -realPlaneHeight/2
-                        float xNorm = (x - screenWidth / 2) / (float)screenWidth;
-                        float yNorm = -(y - screenHeight / 2) / (float)screenHeight;
+                        double xNorm = (x - screenWidth / 2) / (double)screenWidth;
+                        double yNorm = -(y - screenHeight / 2) / (double)screenHeight;
 
-                        float distanceToPlaneFromCamera = Vector3.opSubtract(cameraPos, planeOrigin).getLength();
+                        double distanceToPlaneFromCamera = Vector3.opSubtract(cameraPos, planeOrigin).getLength();
                         double fovInRad = fov / 180f * Math.PI;
 
                         // Height of plane in front of camera in our world units. Tangent function needs radians
-                        float realPlaneHeight = (float)(distanceToPlaneFromCamera * Math.tan(fovInRad));
+                        double realPlaneHeight = (double)(distanceToPlaneFromCamera * Math.tan(fovInRad));
 
                         // Here we suppose that camera is looking always from point (0,0,-Z), so the math here is little simpler to understand
                         // We need to find point on plane that is xNorm * realPlaneHeight / 2 units away from center in x direction,

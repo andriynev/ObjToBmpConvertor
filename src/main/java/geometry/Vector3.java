@@ -1,37 +1,37 @@
 package geometry;
 
 public final class Vector3 {
-    private float X;
-    private float Y;
-    private float Z;
+    private double X;
+    private double Y;
+    private double Z;
 
     public Vector3() {
     }
 
-    public Vector3(float x, float y, float z) {
+    public Vector3(double x, double y, double z) {
         X = x;
         Y = y;
         Z = z;
     }
 
-    public float getX() {
+    public double getX() {
         return X;
     }
 
-    public float getY() {
+    public double getY() {
         return Y;
     }
 
-    public float getZ() {
+    public double getZ() {
         return Z;
     }
 
-    public float getLength() {
-        return (float) Math.sqrt(X * X + Y * Y + Z * Z);
+    public double getLength() {
+        return Math.sqrt(X * X + Y * Y + Z * Z);
     }
 
     public Vector3 Norm() {
-        float length = getLength();
+        double length = getLength();
         return new Vector3(X / length, Y / length, Z / length);
     }
 
@@ -49,7 +49,7 @@ public final class Vector3 {
         return new Vector3(u.Y * v.Z - u.Z * v.Y, u.Z * v.X - u.X * v.Z, u.X * v.Y - u.Y * v.X);
     }
 
-    public float DotProduct(Vector3 other) {
+    public double DotProduct(Vector3 other) {
         return this.X * other.X + this.Y * other.Y + this.Z * other.Z;
     }
 
