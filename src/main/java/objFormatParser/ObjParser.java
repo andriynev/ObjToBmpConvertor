@@ -19,11 +19,26 @@ public class ObjParser {
 
     private final static String PATH = "test.obj";
 
+    public ObjParser() {
+    }
 
-    public void parseObj() throws FileNotFoundException {
+    public ArrayList<Vector3> getVertexList() {
+        return vertexList;
+    }
+
+    public ArrayList<Triangle> getTriangleList() {
+        return triangleList;
+    }
+
+    public void parseObj() {
 
         File file = new File(PATH);
-        Scanner sc = new Scanner(file);
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         String line;
         int lineCount = 1;
 
@@ -70,9 +85,10 @@ public class ObjParser {
     private Triangle processFace(String line) {
         String[] elem = line.split(" ");
         Vector3 x = null , y = null , z = null;
-        x = vertexList.get(parseInt(elem[1]));
-        y = vertexList.get(parseInt(elem[2]));
-        z = vertexList.get(parseInt(elem[3]));
+
+        x = vertexList.get(parseInt(elem[1]) - 1);
+        y = vertexList.get(parseInt(elem[2]) - 1);
+        z = vertexList.get(parseInt(elem[3]) - 1);
 
         return new Triangle(x, y, z);
     }
@@ -80,23 +96,84 @@ public class ObjParser {
     private int parseInt(String str) {
         String[] splitStr;
         int value = 0;
-        int length = str.length();
+
+        splitStr = str.split("/");
+        int length = splitStr.length;
         switch (length) {
-            case 5 :
-                splitStr = str.split("/");
-                value = Integer.parseInt(splitStr[0]);
-            case 4 :
-                splitStr = str.split("//");
-                value = Integer.parseInt(splitStr[0]);
             case 3 :
-                splitStr = str.split("/");
+                //splitStr = str.split("/");
                 value = Integer.parseInt(splitStr[0]);
-            case 1 :
-                value = Integer.parseInt(str);
+                break;
+//            case 4 :
+//                //splitStr = str.split("//");
+//                value = Integer.parseInt(splitStr[0]);
+//                break;
+//            case 2 :
+//                //splitStr = str.split("/");
+//                value = Integer.parseInt(splitStr[0]);
+//                break;
+//            case 1 :
+//                value = Integer.parseInt(str);
+            default: break;
         }
 
        return value;
 
+    }
+
+    public double getMaxX() {
+        double maxX = vertexList.get(0).getX();
+
+        for (int i = 1; i < vertexList.size(); i++) {
+            if (vertexList.get(i).getX() > maxX) {
+                maxX = vertexList.get(i).getX();
+            }
+        }
+        return maxX;
+    }
+
+    public double getMaxY() {
+        double maxY = vertexList.get(0).getY();
+
+        for (int i = 1; i < vertexList.size(); i++) {
+            if (vertexList.get(i).getY() > maxY) {
+                maxY = vertexList.get(i).getY();
+            }
+        }
+        return maxY;
+    }
+
+    public double getMinX() {
+        double minX = vertexList.get(0).getX();
+
+        for (int i = 1; i < vertexList.size(); i++) {
+            if (vertexList.get(i).getX() < minX) {
+                minX = vertexList.get(i).getX();
+            }
+        }
+        return minX;
+    }
+
+    public double getMinY() {
+        double minY = vertexList.get(0).getY();
+
+        for (int i = 1; i < vertexList.size(); i++) {
+            if (vertexList.get(i).getY() < minY) {
+                minY = vertexList.get(i).getY();
+            }
+        }
+        return minY;
+    }
+
+    public double getMinZ() {
+        double minZ = vertexList.get(0).getZ();
+
+        for (int i = 1; i < vertexList.size(); i++) {
+            if (vertexList.get(i).getZ() < minZ) {
+                minZ = vertexList.get(i).getZ();
+            }
+        }
+        return minZ;
     }
 
 }
