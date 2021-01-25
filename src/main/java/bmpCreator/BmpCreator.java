@@ -11,26 +11,25 @@ public class BmpCreator {
 
     public static void saveBmp(int imageWidth, int imageHeight, double[][] buffer) {
         BufferedImage img = map(imageWidth, imageHeight, buffer);
-        savePNG(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/test.bmp");
+        //save(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/legoMan.bmp");
+        save(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/dolphin.bmp");
     }
 
     private static BufferedImage map(int sizeX, int sizeY, double[][] buffer) {
         final BufferedImage res = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                //System.out.print(buffer[x][y]);
                 if (buffer[x][y] == 10) {
                     res.setRGB(x, y, Color.CYAN.getRGB());
                 } else {
                     res.setRGB(x, y, getColor((int) ((1- Math.abs(buffer[x][y])) * 100)));
                 }
             }
-            //System.out.println();
         }
         return res;
     }
 
-    private static void savePNG(final BufferedImage bi, final String path) {
+    private static void save(final BufferedImage bi, final String path) {
         try {
             RenderedImage rendImage = bi;
             ImageIO.write(rendImage, "bmp", new File(path));

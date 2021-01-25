@@ -18,8 +18,8 @@ public class ObjParser {
     private ArrayList<Vector3> vertexList = new ArrayList<Vector3>();
     private ArrayList<Triangle> triangleList = new ArrayList<Triangle>();
 
-    private final static String PATH = "test.obj";
-    //private final static String PATH = "delphin.obj";
+    //private final static String PATH = "legoMan.obj";
+    private final static String PATH = "dolphin.obj";
 
     public ObjParser() {
     }
@@ -102,24 +102,7 @@ public class ObjParser {
 
         splitStr = str.split("/");
         value = Integer.parseInt(splitStr[0]);
-//        int length = splitStr.length;
-//        switch (length) {
-//            case 3 :
-//                //splitStr = str.split("/");
-//
-//                break;
-////            case 4 :
-////                //splitStr = str.split("//");
-////                value = Integer.parseInt(splitStr[0]);
-////                break;
-////            case 2 :
-////                //splitStr = str.split("/");
-////                value = Integer.parseInt(splitStr[0]);
-////                break;
-////            case 1 :
-////                value = Integer.parseInt(str);
-//            default: break;
-//        }
+
 
        return value;
 

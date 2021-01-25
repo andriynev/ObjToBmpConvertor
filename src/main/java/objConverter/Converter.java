@@ -16,9 +16,7 @@ public class Converter {
         parser.parseObj();
 
         ArrayList<Vector3> vertexList = parser.getVertexList();
-//        for (int i = 0; i < vertexList.size(); i++) {
-//            System.out.println(vertexList.get(i).getZ());
-//        }
+
         ArrayList<Triangle> triangleList = parser.getTriangleList();
         double maxX, maxY, minX, minY, minZ;
         maxX = parser.getMaxX();
@@ -39,7 +37,6 @@ public class Converter {
         } else {
             coef = centerY *3;
         }
-        System.out.println("coef " + coef);
 
         Vector3 cameraPos = new Vector3(minX + centerX, minY + centerY, minZ - coef);
 
@@ -53,21 +50,8 @@ public class Converter {
         double fov = 60;
 
         // Screen size in pixels
-        int screenWidth = 300, screenHeight = 300;
+        int screenWidth = 500, screenHeight = 500;
         double[][] screenBuffer = new double[screenWidth][screenHeight];
-
-        /*  b(-2,1,0) *--------* c(1,1,0)
-         *              \     /
-         *                \  /
-         *                  *
-         *             a(0,0,0)
-         */
-        //int size = 1;
-        //Triangle[] trianglesToDraw = new Triangle[size];
-        //trianglesToDraw[0] = new Triangle(new Vector3(0, 0, 0), new Vector3(-2, 1, 0), new Vector3(1, 1, 0));
-        //trianglesToDraw[1] = new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 1, 0));
-        //trianglesToDraw[2] = new Triangle(new Vector3(0, 0, 0), new Vector3(-2, 1, 0), new Vector3(-1, -1, 3));
-
 
 
             for (int x = 0; x < screenWidth; x++)
