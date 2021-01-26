@@ -18,8 +18,9 @@ public class ObjParser {
     private ArrayList<Vector3> vertexList = new ArrayList<Vector3>();
     private ArrayList<Triangle> triangleList = new ArrayList<Triangle>();
 
-    //private final static String PATH = "legoMan.obj";
-    private final static String PATH = "dolphin.obj";
+    private final static String PATH = "legoMan.obj";
+    //private final static String PATH = "dolphin.obj";
+
 
     public ObjParser() {
     }
@@ -139,6 +140,17 @@ public class ObjParser {
             }
         }
         return minX;
+    }
+
+    public double getMaxZ() {
+        double maxZ = vertexList.get(0).getZ();
+
+        for (int i = 1; i < vertexList.size(); i++) {
+            if (vertexList.get(i).getZ() > maxZ) {
+                maxZ = vertexList.get(i).getZ();
+            }
+        }
+        return maxZ;
     }
 
     public double getMinY() {

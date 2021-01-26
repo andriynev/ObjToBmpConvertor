@@ -11,8 +11,8 @@ public class BmpCreator {
 
     public static void saveBmp(int imageWidth, int imageHeight, double[][] buffer) {
         BufferedImage img = map(imageWidth, imageHeight, buffer);
-        //save(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/legoMan.bmp");
-        save(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/dolphin.bmp");
+        save(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/legoMan.bmp");
+        //save(img, "C:/Users/Admin/IdeaProjects/education/ComputerGraphics/dolphin.bmp");
     }
 
     private static BufferedImage map(int sizeX, int sizeY, double[][] buffer) {

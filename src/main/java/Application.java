@@ -1,15 +1,19 @@
-import bmpCreator.BmpCreator;
-import intersectionsProcessing.IntersectionChecker;
-import geometry.Triangle;
-import geometry.Vector3;
-import objConverter.Converter;
+import objFormatParser.ObjParser;
 
 
 public class Application {
 
         public static void main(String[] args)
         {
-            Converter.convert();
+            //Converter.convert();
+
+            ObjParser parser = new ObjParser();
+            parser.parseObj();
+
+
+
+
+
         }
 
 

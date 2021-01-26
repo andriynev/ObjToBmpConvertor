@@ -5,8 +5,12 @@ import geometry.Triangle;
 import geometry.Vector3;
 import intersectionsProcessing.IntersectionChecker;
 import objFormatParser.ObjParser;
+import octree.CollidableAABB;
+import octree.CreateOctree;
+import octree.OcTree;
+import octree.OcTreeNode;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Converter {
 
@@ -15,9 +19,10 @@ public class Converter {
         ObjParser parser = new ObjParser();
         parser.parseObj();
 
-        ArrayList<Vector3> vertexList = parser.getVertexList();
+        CreateOctree creator = new CreateOctree();
+        OcTree<Triangle> tree = creator.create(parser);
 
-        ArrayList<Triangle> triangleList = parser.getTriangleList();
+
         double maxX, maxY, minX, minY, minZ;
         maxX = parser.getMaxX();
         maxY = parser.getMaxY();
@@ -52,6 +57,7 @@ public class Converter {
         // Screen size in pixels
         int screenWidth = 500, screenHeight = 500;
         double[][] screenBuffer = new double[screenWidth][screenHeight];
+        List<Triangle> trianglesList = null;
 
 
             for (int x = 0; x < screenWidth; x++)
@@ -59,9 +65,7 @@ public class Converter {
                 for (int y = 0; y < screenHeight; y++)
                 {
                     screenBuffer[x][y] = 10;
-                    for (int i = 0; i < triangleList.size(); i++) {
 
-                        Triangle triangleToDraw = triangleList.get(i);
 
                         // Normalized coordinates of pixel to [-1;1] interval;
                         // y is inverted because in console output it goes from 0 to screenHeight
@@ -85,11 +89,17 @@ public class Converter {
                         Vector3 rayDirection = Vector3.opSubtract(positionOnPlane, cameraPos);
 
                         // If we find an intersection of the ray with our triangle, we draw "pixel"
+
+
+                    trianglesList = getListOfIntersectTriangles(tree, cameraPos, cameraDir);
+
+                    for (Triangle tr : trianglesList) {
+                        Triangle triangleToDraw = tr;
                         if (IntersectionChecker.ThereIsIntersectionBetweenRayAndTriangle(cameraPos, rayDirection, triangleToDraw))
                         {
 
                             if(FlatShading.calculate(triangleToDraw, cameraDir) <= 0 && FlatShading.calculate(triangleToDraw, cameraDir) >= -1 )
-                            screenBuffer[x][y] = FlatShading.calculate(triangleToDraw, new Vector3(-1, -1, 1));
+                                screenBuffer[x][y] = FlatShading.calculate(triangleToDraw, new Vector3(-1, -1, 1));
 
                         }
                     }
@@ -102,6 +112,34 @@ public class Converter {
         // Output our buffer
         //DrawScreenBuffer(screenHeight, screenWidth, screenBuffer);
         BmpCreator.saveBmp(screenWidth, screenHeight, screenBuffer);
+    }
+
+    private static List<Triangle> getListOfIntersectTriangles(OcTree<Triangle> tree, Vector3 start, Vector3 direction) {
+        Vector3 v1, v2;
+        List<Triangle> trianglesList = null;
+        List<OcTree<Triangle>> childrenList;
+        CollidableAABB bound;
+
+        while (!tree.isLeaf()) {
+            childrenList = tree.getChildren();
+            for (int i = 0; i < 8; i++){
+                bound = childrenList.get(i).getBounds();
+                v1 = new Vector3(bound.getMin()[0],bound.getMin()[1], bound.getMin()[2]);
+                v2 = new Vector3(bound.getMax()[0],bound.getMax()[1], bound.getMax()[2]);
+                boolean intersect = IntersectionChecker.ThereIsIntersectionBetweenRayAndBoundingBox(start, direction, v1, v2 );
+                if (intersect) {
+                    tree = childrenList.get(i);
+                    break;
+                }
+            }
+        }
+
+        List<OcTreeNode<Triangle>> list = tree.getObjects();
+        for (OcTreeNode<Triangle> tr : list) {
+            trianglesList.add(tr.getData());
+        }
+
+        return trianglesList;
     }
 
     private static void DrawScreenBuffer(int screenHeight, int screenWidth, boolean[][] screenBuffer)

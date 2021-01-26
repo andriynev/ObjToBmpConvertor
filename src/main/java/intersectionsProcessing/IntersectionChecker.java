@@ -41,5 +41,33 @@ public class IntersectionChecker
         double t = f * edge2.DotProduct(q);
         return t > EPSILON;
     }
+
+    public static boolean ThereIsIntersectionBetweenRayAndBoundingBox(Vector3 rayOrigin, Vector3 rayVector, Vector3 v1, Vector3 v2) {
+
+        //Liang–Barsky algorithm
+        double A1 = rayOrigin.getY()-v1.getY();
+        double B1 = v1.getX()-rayOrigin.getX();
+        double C1 = v1.getZ()-rayOrigin.getZ();
+
+
+        double A2 = rayVector.getY()-v2.getY();
+        double B2 = v2.getX()-rayVector.getX();
+        double C2 = v2.getZ()-rayVector.getZ();
+
+
+        double delta = A1*B2 - A2*B1 - C1*C2;
+        if(delta == 0) return false;
+
+
+        double S2 = A2*v2.getX()+B2*v2.getY();
+        double S1 = A1*v1.getX()+B1*v1.getY();
+
+        double invdelta = 1/delta;
+
+        if( (B2*S1 - B1*S2)*invdelta > delta && (A1*S2 - A2*S1)*invdelta > delta ) {
+            return true;
+        }
+    }
+
 }
 
